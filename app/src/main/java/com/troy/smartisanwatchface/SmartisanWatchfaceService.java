@@ -170,7 +170,7 @@ public class SmartisanWatchfaceService extends CanvasWatchFaceService {
                     isDrak = false;
                 }
             } else if (am_pm == Calendar.PM) {
-                if (hour > 7) {
+                if (hour > 6) {
                     isDrak = true;
                 }
             }
@@ -205,13 +205,10 @@ public class SmartisanWatchfaceService extends CanvasWatchFaceService {
             int baseLine = bounds.top + (bounds.bottom - bounds.top - fontMetricsInt.bottom + fontMetricsInt.top) / 2 - fontMetricsInt.top;
             canvas.drawText("12", bounds.centerX(), 40f, mTickPaint);
             canvas.drawText("3", width - 28f, baseLine, mTickPaint);
-            //画时针
+
             float hourRot = (hour + minute / 60f + second / 3600f) * 30f;
             float hourShadowRot = 0f;
-            canvas.save();
-            canvas.rotate(hourRot, centerX, centerY);
-            canvas.drawBitmap(mHourBitmap, (width - mHourHandBitmap.getWidth()) / 2, centerY - mHourHandBitmap.getHeight() + 10f, null);
-            canvas.restore();
+
             //画时针Shadow
             if (hourRot <= 90f) {
                 hourShadowRot = hourRot / 20f;
@@ -224,15 +221,18 @@ public class SmartisanWatchfaceService extends CanvasWatchFaceService {
             }
             canvas.save();
             canvas.rotate(hourRot, centerX, centerY);
-            canvas.drawBitmap(mHourHandShadowBitmap, (width - mHourHandBitmap.getWidth()) / 2+hourShadowRot, centerY - mHourHandBitmap.getHeight() + 10f, null);
+            canvas.drawBitmap(mHourHandShadowBitmap, (width - mHourHandBitmap.getWidth()) / 2 + hourShadowRot, centerY - mHourHandBitmap.getHeight() + 10f, null);
             canvas.restore();
-            //画分针
+
+            //画时针
+            canvas.save();
+            canvas.rotate(hourRot, centerX, centerY);
+            canvas.drawBitmap(mHourBitmap, (width - mHourHandBitmap.getWidth()) / 2, centerY - mHourHandBitmap.getHeight() + 10f, null);
+            canvas.restore();
+
             float minuteRot = (minute + second / 60f) * 6f;
             float minuteShadowRot = 0f;
-            canvas.save();
-            canvas.rotate(minuteRot, centerX, centerY);
-            canvas.drawBitmap(mMinuteBitmap, (width - mMinuteHandBitmap.getWidth()) / 2, centerX - mMinuteHandBitmap.getHeight() + 10f, null);
-            canvas.restore();
+
             //画分针Shadow
             if (minuteRot <= 90f) {
                 minuteShadowRot = minuteRot / 20f;
@@ -245,17 +245,21 @@ public class SmartisanWatchfaceService extends CanvasWatchFaceService {
             }
             canvas.save();
             canvas.rotate(minuteRot, centerX, centerY);
-            canvas.drawBitmap(mMinuteHandShadowBitmap, (width - mMinuteHandBitmap.getWidth()) / 2+minuteShadowRot, centerX - mMinuteHandBitmap.getHeight() + 10f, null);
+            canvas.drawBitmap(mMinuteHandShadowBitmap, (width - mMinuteHandBitmap.getWidth()) / 2 + minuteShadowRot, centerX - mMinuteHandBitmap.getHeight() + 10f, null);
             canvas.restore();
+
+            //画分针
+            canvas.save();
+            canvas.rotate(minuteRot, centerX, centerY);
+            canvas.drawBitmap(mMinuteBitmap, (width - mMinuteHandBitmap.getWidth()) / 2, centerX - mMinuteHandBitmap.getHeight() + 10f, null);
+            canvas.restore();
+
             //画中心点
             canvas.drawBitmap(mCenterBitmap, (width - mHandCenterBitmap.getWidth()) / 2, (height - mHandCenterBitmap.getHeight()) / 2, null);
-            //画秒针
+
             float secondRot = second * 6f;
             float secondShadowRot = 0f;
-            canvas.save();
-            canvas.rotate(secondRot, centerX, centerY);
-            canvas.drawBitmap(mSecHandBitmap, (width - mSecHandBitmap.getWidth()) / 2, 18f, null);
-            canvas.restore();
+
             //画秒针Shadow
             if (secondRot <= 90f) {
                 secondShadowRot = secondRot / 20f;
@@ -268,7 +272,13 @@ public class SmartisanWatchfaceService extends CanvasWatchFaceService {
             }
             canvas.save();
             canvas.rotate(secondRot, centerX, centerY);
-            canvas.drawBitmap(mSecHandShadowBitmap, (width - mSecHandBitmap.getWidth()) / 2+secondShadowRot, 18f, null);
+            canvas.drawBitmap(mSecHandShadowBitmap, (width - mSecHandBitmap.getWidth()) / 2 + secondShadowRot, 18f, null);
+            canvas.restore();
+
+            //画秒针
+            canvas.save();
+            canvas.rotate(secondRot, centerX, centerY);
+            canvas.drawBitmap(mSecHandBitmap, (width - mSecHandBitmap.getWidth()) / 2, 18f, null);
             canvas.restore();
         }
 
